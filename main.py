@@ -1,33 +1,38 @@
 import numpy as np
 
 
-def main():
-    grid = create_grid(10)
-    # Set Starting point as 8
-    grid[0, 0] = 8
-    phase1(grid)
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.children = []
 
 
-def create_grid(n):
+    def addChildren(self, value):
+        self.children.append(Node(value))
+        return self
+
+    def DFS(self, grid):
+        for child in self.children:
+            child.DFS(grid)
+        return grid
+
+def create_grid1(n):
     new_grid = {}
     for i in range(n):
         for j in range(n):
             new_grid[i, j] = 0
+    # Put random obsticles
+    new_grid[9, 7] = 1
+    new_grid[8, 7] = 1
+    new_grid[6, 7] = 1
+    new_grid[6, 8] = 1
+
+    # Set Delivery point as 9
+    new_grid[9, 9] = 9
     return new_grid
 
 
-def phase1(grid):
-    phase1_grid = grid
-    # Put random obsticles
-    phase1_grid[9, 7] = 1
-    phase1_grid[8, 7] = 1
-    phase1_grid[6, 7] = 1
-    phase1_grid[6, 8] = 1
-
-    # Set Delivery point as 9
-    phase1_grid[9, 9] = 9
-    print(phase1_grid)
-
-
 if __name__ == "__main__":
-    main()
+    graph = Node()
+    grid = create_grid1(10)
+    graph.DFS([], grid)
